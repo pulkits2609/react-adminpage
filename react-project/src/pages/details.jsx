@@ -7,7 +7,7 @@ import ShinyText from "../components/shinyText.jsx";
 import UserLogo from "../assets/userLogo.png";
 
 import { removeAuth } from "../AuthRoutes/auth";
-import "./Details.css";
+import "./details.css";
 
 export default function Details() {
   const { id } = useParams();          // player ID from URL
