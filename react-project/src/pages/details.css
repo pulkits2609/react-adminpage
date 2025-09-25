@@ -1,0 +1,77 @@
+.details-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.details-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: black;
+}
+
+.details-content {
+  padding: 28px;
+  color: #e9f9ff;
+  flex: 1;
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.1rem;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.player-card-content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+}
+
+.player-card-left {
+  flex: 0 0 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-card-image {
+  width: 100%;
+  max-width: 120px;
+  border-radius: 8px;
+}
+
+.player-card-right {
+  flex: 0 0 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shiny-line {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.details-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}

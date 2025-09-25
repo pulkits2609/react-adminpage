@@ -1,0 +1,163 @@
+/* Reset body & html to avoid scroll */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* App container takes full viewport */
+.app {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* Background Beams */
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Heading section */
+.heading-section {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  margin-top: 100px;
+}
+
+
+/* StarBorder container */
+.star-border {
+  display: inline-flex;
+  padding: 20px 40px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.35); /* restored darker backdrop */
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.heading-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffffffdd;
+  letter-spacing: 1.5px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Blur text in top-right */
+.blurtext-container {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  z-index: 10;
+}
+
+
+/* Ensure GlareHover wraps tightly */
+.glare-wrapper {
+  display: inline-flex;      /* keeps it snug horizontally + vertically */
+  align-items: center;       /* center content vertically */
+  justify-content: center;   /* center content horizontally */
+  width: auto !important;    /* prevent stretching */
+  height: auto !important;   /* prevent stretching */
+}
+
+/* Blur text box */
+.blur-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffffee;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 10px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+/* Login section */
+.login-section {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  position: relative;
+}
+
+/* Starbordered login box */
+.login-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 320px;
+  padding: 30px; /* just padding inside the border */
+}
+
+/* Input fields */
+.login-input {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  outline: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.login-input::placeholder {
+  color: rgba(200, 200, 200, 0.7);
+  font-style: italic;
+}
+
+/* On focus — brighter glow */
+.login-input:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Button row */
+.login-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* Starbordered buttons */
+.login-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffffee;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  background: transparent; /* remove inner dark div */
+  border: 0px solid black;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}
