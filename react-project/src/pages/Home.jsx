@@ -103,7 +103,15 @@ export default function Home() {
           </StarBorder>
 
           <div className="header-actions">
-            <button className="btn" onClick={loadStats} disabled={loading}>
+            <button
+              className="btn"
+              onClick={() => {
+                loadStats();
+                loadUsers();
+                loadBanned();
+              }}
+              disabled={loading}
+            > 
               {loading ? "Refreshing…" : "Refresh Stats"}
             </button>
             <button className="btn ghost" onClick={handleLogout}>
