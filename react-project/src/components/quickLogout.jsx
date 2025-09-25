@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { removeAuth } from "../AuthRoutes/auth.js";
 import GlareHover from "./glareHover.jsx";
-import "./QuickLogout.css";
+import "./quickLogout.css";
 
 export default function QuickLogout() {
   const navigate = useNavigate();
