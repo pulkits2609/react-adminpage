@@ -160,6 +160,14 @@ html, body {
   transform: scale(1.05);
 }
 
+.success-text {
+  margin-top: 8px;
+  color: #00ff99;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* Password field with toggle */
 .password-container {
   position: relative;

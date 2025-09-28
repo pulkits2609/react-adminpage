@@ -199,7 +199,7 @@ export default function Home() {
                   className="user-card banned clickable"
                   color="red"
                   speed="5s"
-                  onClick={() => navigate(`/details/${u._id}`)} // redirect
+                  onClick={() => navigate(`/details/${u.username}`)}
                 >
                   <div className="user-card-content">
                     <div className="user-card-left">

@@ -1,6 +1,10 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { login as apiLogin, removeAuth } from "../AuthRoutes/auth.js";
+import {
+  login as apiLogin,
+  removeAuth,
+  signup as apiSignup,
+} from "../AuthRoutes/auth.js";
 
 import BlurText from "../components/blurText.jsx";
 import TextType from "../components/textType.jsx";
@@ -16,18 +20,21 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(""); // success message for signup
+  const [loadingLogin, setLoadingLogin] = useState(false);
+  const [loadingSignup, setLoadingSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  // Refs for inputs
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
   const handleLogin = async () => {
     setError("");
-    setLoading(true);
+    setSuccess("");
+    setLoadingLogin(true);
+    setLoadingSignup(false);
 
     try {
       await apiLogin(username, password);
@@ -35,16 +42,60 @@ function App() {
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {
-      setLoading(false);
+      setLoadingLogin(false);
     }
   };
 
-  const handleLogout = () => {
-    removeAuth();
-    navigate("/", { replace: true });
-  };
+  const handleSignup = async () => {
+    setError("");
+    setSuccess("");
 
-  // Handle Enter key press
+    let usernameErrors = [];
+    let passwordErrors = [];
+
+    // ✅ Username checks
+    if (username.length < 8) {
+      usernameErrors.push("• Must be at least 8 characters long");
+    }
+    if (!/[A-Z]/.test(username)) {
+      usernameErrors.push("• Must contain at least one uppercase letter");
+    }
+    if (!/[0-9]/.test(username)) {
+      usernameErrors.push("• Must contain at least one number");
+    }
+
+    // ✅ Password checks
+    if (password.length < 8) {
+      passwordErrors.push("• Must be at least 8 characters long");
+    }
+
+    if (usernameErrors.length > 0 || passwordErrors.length > 0) {
+      let errorMsg = "";
+      if (usernameErrors.length > 0) {
+        errorMsg += "Username requirements:\n" + usernameErrors.join("\n") + "\n";
+      }
+      if (passwordErrors.length > 0) {
+        errorMsg += "Password requirements:\n" + passwordErrors.join("\n");
+      }
+      setError(errorMsg.trim());
+      return;
+  }
+
+  setLoadingSignup(true);
+  setLoadingLogin(false);
+
+  try {
+    const res = await apiSignup(username, password);
+    setSuccess(res.message || "Account created, please login.");
+  } catch (err) {
+    setError(err.message || "Signup failed");
+  } finally {
+    setLoadingSignup(false);
+  }
+};
+
+
+
   const handleKeyDown = (e, field) => {
     if (e.key === "Enter") {
       if (field === "username") {
@@ -57,13 +108,13 @@ function App() {
 
   return (
     <div className="app dark-theme">
-      {/* Background Beams Effect */}
+      {/* Background */}
       <div className="background">
         <Beams
           beamWidth={2}
           beamHeight={15}
           beamNumber={18}
-          lightColor= "#888"      // muted grey light
+          lightColor="#888"
           speed={2}
           noiseIntensity={1.5}
           scale={0.25}
@@ -71,30 +122,6 @@ function App() {
         />
       </div>
 
-      {/* Blur text inside GlareHover (top-right) */}
-      <div className="blurtext-container">
-        <GlareHover
-          glareColor="#888"
-          glareOpacity={0.3}
-          glareAngle={-30}
-          glareSize={300}
-          transitionDuration={800}
-          playOnce={false}
-          className="glare-wrapper"
-        >
-          <div className="blur-box">
-            <BlurText
-              text="Download our game from here!"
-              delay={100}
-              animateBy="words"
-              direction="top"
-              className="blur-text"
-            />
-          </div>
-        </GlareHover>
-      </div>
-
-      {/* Heading Section */}
       <div className="heading-section">
         <StarBorder as="div" className="star-border" color="grey" speed="5s">
           <TextType
@@ -143,7 +170,9 @@ function App() {
               </span>
             </div>
 
+            {/* Error / Success messages */}
             {error && <div className="error-text">{error}</div>}
+            {success && <div className="success-text">{success}</div>}
 
             <div className="login-buttons">
               <StarBorder
@@ -152,8 +181,9 @@ function App() {
                 color="grey"
                 speed="5s"
                 onClick={handleLogin}
+                disabled={loadingLogin || loadingSignup}
               >
-                {loading ? "Logging in..." : "Login"}
+                {loadingLogin ? "Processing..." : "Login"}
               </StarBorder>
 
               <StarBorder
@@ -161,8 +191,10 @@ function App() {
                 className="login-btn"
                 color="grey"
                 speed="5s"
+                onClick={handleSignup}
+                disabled={loadingLogin || loadingSignup}
               >
-                Signup
+                {loadingSignup ? "Processing..." : "Signup"}
               </StarBorder>
             </div>
           </StarBorder>

@@ -1,7 +1,7 @@
 // src/AuthRoutes/auth.js
 // const BASE_URL = "https://visitors-cement-customize-faces.trycloudflare.com/"; // your API base
 const BASE_URL = "https://api.pulkitworks.info";
-const AUTH_KEY = "my_app_auth_v1";         // localStorage key
+const AUTH_KEY = "my_app_auth_v1"; // localStorage key
 
 // --- Auth state helpers ---
 export function setAuth(obj) {
@@ -59,6 +59,42 @@ export async function login(username, password, options = {}) {
   }
 }
 
+// --- Signup ---
+export async function signup(username, password, options = {}) {
+  const { timeout = 7000 } = options;
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const res = await fetch(`${BASE_URL}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(id);
+
+    const data = await res.json().catch(() => {
+      throw new Error("Invalid JSON received from server");
+    });
+
+    if (!res.ok) {
+      throw new Error(data?.message || res.statusText || "Signup failed");
+    }
+
+    if (data.success) {
+      return { success: true, message: "Account created, please login" };
+    } else {
+      throw new Error(data.message || "Signup failed");
+    }
+  } catch (err) {
+    clearTimeout(id);
+    throw err;
+  }
+}
+
+
 // --- New helpers for Home page ---
 
 /** Get total users count */
@@ -99,30 +135,13 @@ export async function getAllUserDetails() {
 export async function getBannedUserDetails() {
   const url = `${BASE_URL}/users/banned`;
   try {
-    const res = await fetch(url, {
-      method: "GET",
-      // if your API requires cookie-based auth:
-      // credentials: "include"
-    });
+    const res = await fetch(url, { method: "GET" });
 
-    // If non-2xx, grab text for debugging
     if (!res.ok) {
-      const txt = await res.text().catch(() => "<no body>");
-      console.error("getBannedUserDetails: non-ok response", res.status, txt);
       throw new Error(`Failed to fetch banned users (${res.status})`);
     }
 
-    // read raw text for extra debug info (then parse)
-    const raw = await res.text();
-    console.log("getBannedUserDetails: raw response:", raw);
-
-    let data;
-    try {
-      data = JSON.parse(raw);
-    } catch (err) {
-      console.error("getBannedUserDetails: JSON parse error", err);
-      throw new Error("Invalid JSON returned by banned endpoint");
-    }
+    const data = await res.json();
 
     // normalize possible shapes
     if (Array.isArray(data)) return data;
@@ -135,10 +154,8 @@ export async function getBannedUserDetails() {
       if (Array.isArray(data[key])) return data[key];
     }
 
-    console.warn("getBannedUserDetails: unexpected response shape", data);
     return [];
   } catch (err) {
-    console.error("getBannedUserDetails: error", err);
     throw err;
   }
 }
