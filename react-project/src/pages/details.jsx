@@ -22,7 +22,7 @@ export default function Details() {
   async function fetchPlayer() {
     setLoading(true);
     try {
-      const res = await fetch("http://api.pulkitworks.info/users/details/fetch", {
+      const res = await fetch("https://api.pulkitworks.info/users/details/fetch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: id }),   // 🔥 send username instead of id
