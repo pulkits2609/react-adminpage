@@ -44,13 +44,12 @@ html, body {
   margin-top: 100px;
 }
 
-
 /* StarBorder container */
 .star-border {
   display: inline-flex;
   padding: 20px 40px;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.35); /* restored darker backdrop */
+  background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
@@ -71,14 +70,13 @@ html, body {
   z-index: 10;
 }
 
-
 /* Ensure GlareHover wraps tightly */
 .glare-wrapper {
-  display: inline-flex;      /* keeps it snug horizontally + vertically */
-  align-items: center;       /* center content vertically */
-  justify-content: center;   /* center content horizontally */
-  width: auto !important;    /* prevent stretching */
-  height: auto !important;   /* prevent stretching */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  height: auto !important;
 }
 
 /* Blur text box */
@@ -109,14 +107,14 @@ html, body {
   flex-direction: column;
   gap: 15px;
   width: 320px;
-  padding: 30px; /* just padding inside the border */
+  padding: 30px;
 }
 
 /* Input fields */
 .login-input {
   padding: 14px 16px;
   border-radius: 10px;
-  border: 2px solid rgba(0, 255, 255, 0.4);
+  border: 3px solid rgba(65, 65, 65, 0.4);
   outline: none;
   background: rgba(0, 0, 0, 0.5);
   color: #ffffff;
@@ -124,6 +122,7 @@ html, body {
   width: 100%;
   box-sizing: border-box;
   transition: all 0.3s ease;
+
 }
 
 .login-input::placeholder {
@@ -131,11 +130,10 @@ html, body {
   font-style: italic;
 }
 
-/* On focus — brighter glow */
 .login-input:focus {
-  border-color: #00ffff;
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
-  background: rgba(0, 0, 0, 0.7);
+  border-color: #333333;
+  box-shadow: 0 0 12px rgba(69, 69, 69, 0.6);
+  background: rgba(49, 48, 48, 0.7);
 }
 
 /* Button row */
@@ -154,10 +152,38 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s ease;
-  background: transparent; /* remove inner dark div */
-  border: 0px solid black;
+  background: transparent;
+  border: none;
 }
 
 .login-btn:hover {
   transform: scale(1.05);
+}
+
+/* Password field with toggle */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password-icon {
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.toggle-password-icon:hover {
+  opacity: 1;
 }

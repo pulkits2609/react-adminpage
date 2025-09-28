@@ -1,4 +1,3 @@
-// src/pages/Details.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Beams from "../components/beams.jsx";
@@ -10,7 +9,7 @@ import { removeAuth } from "../AuthRoutes/auth";
 import "./details.css";
 
 export default function Details() {
-  const { id } = useParams();          // player ID from URL
+  const { id } = useParams();   // this will now be username (not _id)
   const navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,10 +22,15 @@ export default function Details() {
   async function fetchPlayer() {
     setLoading(true);
     try {
-      const res = await fetch(`http://65.0.20.31:3000/users/details/${id}`);
+      const res = await fetch("http://api.pulkitworks.info/users/details/fetch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: id }),   // 🔥 send username instead of id
+      });
+
       const data = await res.json();
 
-      if (data && data.user) {
+      if (data && data.success && data.user) {
         setPlayer(data.user);
       } else {
         setMessage("⚠️ Player not found");
@@ -50,7 +54,6 @@ export default function Details() {
 
   return (
     <div className="details-root">
-      {/* Background */}
       <div className="details-background">
         <Beams
           beamWidth={2}
@@ -80,48 +83,20 @@ export default function Details() {
                 />
               </div>
               <div className="player-card-right">
-                <ShinyText
-                  text={`Player Name: ${player.playername}`}
-                  speed={3}
-                  className="shiny-line"
-                />
-                <ShinyText
-                  text={`Username: ${player.username}`}
-                  speed={3}
-                  className="shiny-line"
-                />
-                <ShinyText
-                  text={`Level: ${player.level}`}
-                  speed={3}
-                  className="shiny-line"
-                />
-                <ShinyText
-                  text={`Coins: ${player.coins}`}
-                  speed={3}
-                  className="shiny-line"
-                />
-                <ShinyText
-                  text={`Enemies Defeated: ${player.EnemiesDefeated}`}
-                  speed={3}
-                  className="shiny-line"
-                />
-                <ShinyText
-                  text={`Account Status: ${player.accountStatus}`}
-                  speed={3}
-                  className="shiny-line"
-                />
+                <ShinyText text={`Player Name: ${player.playername}`} speed={3} className="shiny-line" />
+                <ShinyText text={`Username: ${player.username}`} speed={3} className="shiny-line" />
+                <ShinyText text={`Level: ${player.level}`} speed={3} className="shiny-line" />
+                <ShinyText text={`Coins: ${player.coins}`} speed={3} className="shiny-line" />
+                <ShinyText text={`Enemies Defeated: ${player.EnemiesDefeated}`} speed={3} className="shiny-line" />
+                <ShinyText text={`Account Status: ${player.accountStatus}`} speed={3} className="shiny-line" />
               </div>
             </div>
           </StarBorder>
         )}
 
         <div className="details-actions">
-          <button className="btn ghost" onClick={handleBack}>
-            ⬅ Back
-          </button>
-          <button className="btn" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="btn ghost" onClick={handleBack}>⬅ Back</button>
+          <button className="btn" onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>

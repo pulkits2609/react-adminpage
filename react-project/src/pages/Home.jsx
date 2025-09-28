@@ -84,7 +84,7 @@ export default function Home() {
           beamWidth={2}
           beamHeight={15}
           beamNumber={12}
-          lightColor="#00ffff"
+          lightColor="#888"
           speed={2}
           noiseIntensity={1.75}
           scale={0.2}
@@ -97,7 +97,7 @@ export default function Home() {
         <header className="home-header">
           <StarBorder as="div" className="home-title" color="cyan" speed="5s">
             <div className="title-inner">
-              <h1>Welcome back, {username} 👋</h1>
+              <h1>Welcome back, {username}</h1>
               <p className="subtitle">Server overview</p>
             </div>
           </StarBorder>
@@ -150,7 +150,7 @@ export default function Home() {
                   className="user-card clickable"
                   color="cyan"
                   speed="5s"
-                  onClick={() => navigate(`/details/${u._id}`)} // redirect
+                  onClick={() => navigate(`/details/${u.username}`)} //this redirects
                 >
                   <div className="user-card-content">
                     <div className="user-card-left">
