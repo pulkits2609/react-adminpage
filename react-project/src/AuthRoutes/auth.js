@@ -1,6 +1,7 @@
 // src/AuthRoutes/auth.js
-// const BASE_URL = "https://visitors-cement-customize-faces.trycloudflare.com/"; // your API base
-const BASE_URL = "https://api.pulkitworks.info";
+
+// const BASE_URL = "https://api.pulkitworks.info"; //API Base URL
+const BASE_URL = "https://api.pulkitworks.info"; //API Base URL
 const AUTH_KEY = "my_app_auth_v1"; // localStorage key
 
 // --- Auth state helpers ---

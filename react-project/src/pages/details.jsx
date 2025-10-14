@@ -4,16 +4,16 @@ import Beams from "../components/beams.jsx";
 import StarBorder from "../components/starBorder.jsx";
 import ShinyText from "../components/shinyText.jsx";
 import UserLogo from "../assets/userLogo.png";
-
 import { removeAuth } from "../AuthRoutes/auth";
 import "./details.css";
 
 export default function Details() {
-  const { id } = useParams();   // this will now be username (not _id)
+  const { id } = useParams(); // username
   const navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [processing, setProcessing] = useState(false); // 🔹 for Ban/Unban button loading
 
   useEffect(() => {
     fetchPlayer();
@@ -25,7 +25,7 @@ export default function Details() {
       const res = await fetch("https://api.pulkitworks.info/users/details/fetch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: id }),   // 🔥 send username instead of id
+        body: JSON.stringify({ username: id }),
       });
 
       const data = await res.json();
@@ -50,6 +50,58 @@ export default function Details() {
   function handleLogout() {
     removeAuth();
     navigate("/", { replace: true });
+  }
+
+  // 🔹 Function to Ban the player
+  async function handleBan() {
+    if (!player?.username) return;
+    setProcessing(true);
+    try {
+      const res = await fetch("https://api.pulkitworks.info/users/ban", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: player.username }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ ${player.username} has been banned.`);
+        navigate("/home");
+      } else {
+        alert(`⚠️ Failed to ban: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Ban Error:", err);
+      alert("❌ Error banning player.");
+    } finally {
+      setProcessing(false);
+    }
+  }
+
+  // 🔹 Function to Unban the player
+  async function handleUnban() {
+    if (!player?.username) return;
+    setProcessing(true);
+    try {
+      const res = await fetch("https://api.pulkitworks.info/users/unban", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: player.username }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ ${player.username} has been unbanned.`);
+        navigate("/home");
+      } else {
+        alert(`⚠️ Failed to unban: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Unban Error:", err);
+      alert("❌ Error unbanning player.");
+    } finally {
+      setProcessing(false);
+    }
   }
 
   return (
@@ -95,8 +147,37 @@ export default function Details() {
         )}
 
         <div className="details-actions">
-          <button className="btn ghost" onClick={handleBack}>⬅ Back</button>
-          <button className="btn" onClick={handleLogout}>Logout</button>
+          <button className="btn ghost" onClick={handleBack}>
+            ⬅ Back
+          </button>
+          <button className="btn" onClick={handleLogout}>
+            Logout
+          </button>
+
+          {/* 🔹 Ban / Unban Button */}
+          {!loading && player && (
+            <>
+              {player.accountStatus === "banned" ? (
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "green" }}
+                  onClick={handleUnban}
+                  disabled={processing}
+                >
+                  {processing ? "Processing..." : "Unban Player"}
+                </button>
+              ) : (
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "red" }}
+                  onClick={handleBan}
+                  disabled={processing}
+                >
+                  {processing ? "Processing..." : "Ban Player"}
+                </button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
